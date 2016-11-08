@@ -1,11 +1,14 @@
 package com.example.android.booklistingapp;
 
+
 import android.os.AsyncTask;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +23,16 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_TITLE = "title";
     private static final String TAG_AUTHORS = "authors";
 
+    private ListView lv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button btn = (Button) findViewById(R.id.search_btn);
+
+
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,18 +53,17 @@ public class MainActivity extends AppCompatActivity {
     */
 
     private class ParseJSON extends AsyncTask<String, Void, Book> {
+
         @Override
         protected Book doInBackground(String... urls) {
-
             String url = urlString;
             return null;
         }
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MainActivity.this, "Loading results, please wait...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Loading results, please wait...", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -77,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
 
         TextView authorsTextView = (TextView) findViewById(R.id.book_authors);
         authorsTextView.setText(book.authors);
-
     }
 
 
 }//End of MainActivity
+
+
 
 
 
