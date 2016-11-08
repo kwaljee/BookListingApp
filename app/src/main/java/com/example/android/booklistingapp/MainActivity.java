@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 3) Ensure search is done in the background (would be better to use AsyncTaskLoader to avoid memory leaks)
                 4) Check for Empty List (Use ProgressBar in XML, hide after search has been conducted)
                 5) Add information for user on Empty Screen before search button is pressed and when app is first launched
-
     */
 
     private class ParseJSON extends AsyncTask<String, Void, Book> {
