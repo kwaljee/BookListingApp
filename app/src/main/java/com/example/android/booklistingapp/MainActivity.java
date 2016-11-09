@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                "Sorry, please enter a valid title or author.",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
