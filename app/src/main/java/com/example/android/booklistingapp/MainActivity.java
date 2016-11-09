@@ -1,6 +1,5 @@
 package com.example.android.booklistingapp;
 
-
 import android.os.AsyncTask;
 
 import android.support.v7.app.AppCompatActivity;
