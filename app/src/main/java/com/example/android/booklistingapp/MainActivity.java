@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Loading results, please wait...", Toast.LENGTH_LONG).show();
         }
 
-
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -142,8 +141,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }//End of MainActivity
-
-
-
-
-
