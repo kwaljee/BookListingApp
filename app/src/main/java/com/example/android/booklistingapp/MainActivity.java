@@ -60,20 +60,12 @@ public class MainActivity extends AppCompatActivity {
                 5) Add information for user on Empty Screen before search button is pressed and when app is first launched
     */
 
-    private void updateUI(Book book) {
 
-        TextView titleTextView = (TextView) findViewById(R.id.book_title);
-        titleTextView.setText(book.title);
-
-        TextView authorsTextView = (TextView) findViewById(R.id.book_authors);
-        authorsTextView.setText(book.authors);
-    }
 
     private class ParseJSON extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... strings) {
-
 
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
@@ -88,34 +80,28 @@ public class MainActivity extends AppCompatActivity {
                     // Getting JSON Array node
                     JSONArray items = jsonObj.getJSONArray("items");
 
-
-                    // looping through all books
+                    // looping through all Books
                     for (int i = 0; i < items.length(); i++) {
-                        JSONObject c = items.getJSONObject(i);
-                        String title = c.getString("title");
-                        String authors;
+                        JSONObject books = items.getJSONObject(i);
+                        String title = books.getString("title");
 
-                        JSONObject VolumeDetails= jsonObj.getJSONObject("volumeInfo");
 
-                        if (VolumeDetails.has("authors")){
-                            authors = (VolumeDetails.getString("authors"));
-                            authors = authors.replace("[", "");
-                            authors = authors.replace("]", "");
-                        }
-                        else{
-                            authors = "";
+                        // volumeInfo node is JSON Object
+                        JSONObject volumeInfo = books.getJSONObject("volumeInfo");
+                        String authors = volumeInfo.getString("authors");
 
-                        }
 
-                        HashMap<String, String> bookInfo = new HashMap<>();
+                        // tmp hash map for single book
+                        HashMap<String, String> book = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        bookInfo.put("title", title);
-                        bookInfo.put("authors", authors);
+                        book.put(TAG_TITLE, title);
+                        book.put(TAG_AUTHORS, authors);
 
 
-                        // adding book to listing
-                        bookList.add(bookInfo);
+                        // adding book to book list
+                        bookList.add(book);
+
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -153,25 +139,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         @Override
-        protected void onPostExecute(Void book) {
-            super.onPostExecute(book);
-
-            ListAdapter adapter = new SimpleAdapter(MainActivity.this,
-                    bookList,
-                    R.layout.activity_main,
-                    new String[]{TAG_TITLE, TAG_AUTHORS},
-                    new int[]{ R.id.book_title, R.id.book_authors}
-            );
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            ListAdapter adapter = new SimpleAdapter(MainActivity.this, bookList,
+                    R.layout.activity_main, new String[]{ "title","authors"},
+                    new int[]{R.id.book_title, R.id.book_authors});
             lv.setAdapter(adapter);
-
-            /*if (book == null) {
-                return;
-            }*/
-            //updateUI(book);
         }
     }
-
-
 }//End of MainActivity
 
 
