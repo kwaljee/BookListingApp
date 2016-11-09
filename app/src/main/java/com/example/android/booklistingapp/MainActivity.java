@@ -24,7 +24,6 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private static final String TAG_TITLE = "title";
     private static final String TAG_AUTHORS = "authors";
     private static String urlString;
@@ -60,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 5) Add information for user on Empty Screen before search button is pressed and when app is first launched
     */
 
-
-
     private class ParseJSON extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -83,12 +80,19 @@ public class MainActivity extends AppCompatActivity {
                     // looping through all Books
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject books = items.getJSONObject(i);
-                        String title = books.getString("title");
-
 
                         // volumeInfo node is JSON Object
                         JSONObject volumeInfo = books.getJSONObject("volumeInfo");
+                        String title = volumeInfo.getString("title");
                         String authors = volumeInfo.getString("authors");
+
+                        if (volumeInfo.has("authors")){
+                            authors = authors.replace("[", "");
+                            authors = authors.replace("]", "");
+                        }
+                        else{
+                            authors = "Unknown";
+                        }
 
 
                         // tmp hash map for single book
@@ -142,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, bookList,
-                    R.layout.activity_main, new String[]{ "title","authors"},
+                    R.layout.list_item, new String[]{"title","authors"},
                     new int[]{R.id.book_title, R.id.book_authors});
             lv.setAdapter(adapter);
         }
