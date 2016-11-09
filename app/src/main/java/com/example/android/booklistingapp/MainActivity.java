@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final String TAG_TITLE = "title";
-   // private ListView lv;
     private static final String TAG_AUTHORS = "authors";
     private static String urlString;
     ArrayList<HashMap<String, String>> bookList;
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         bookInfo.put("authors", authors);
 
 
-                        // adding contact to contact list
+                        // adding book to listing
                         bookList.add(bookInfo);
                     }
                 } catch (final JSONException e) {
@@ -166,9 +165,9 @@ public class MainActivity extends AppCompatActivity {
             );
             lv.setAdapter(adapter);
 
-            if (book == null) {
+            /*if (book == null) {
                 return;
-            }
+            }*/
             //updateUI(book);
         }
     }
