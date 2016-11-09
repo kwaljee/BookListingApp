@@ -3,6 +3,8 @@ package com.example.android.booklistingapp;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,14 +12,17 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,24 +32,41 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> bookList;
     private String TAG = MainActivity.class.getSimpleName();
     private ListView lv;
+    ListAdapter adapter;
+    private EditText input;
+    private TextView mEmptyStateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        input = (EditText) findViewById(R.id.search_txt);
         bookList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.book_list);
 
-        Button btn = (Button) findViewById(R.id.search_btn);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        lv.setEmptyView(mEmptyStateTextView);
+
+        input.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText input = (EditText) findViewById(R.id.search_txt);
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 String query = input.getText().toString().replace(" ", "+");
                 urlString = "https://www.googleapis.com/books/v1/volumes?q="+query+"&orderBy=newest";
                 new ParseJSON().execute(urlString);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
@@ -97,27 +119,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
-
                 }
 
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Sorry, please enter a valid title or author.",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
             }
 
             return null;
@@ -126,16 +131,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MainActivity.this, "Loading results, please wait...", Toast.LENGTH_LONG).show();
+            bookList.clear();
+            mEmptyStateTextView.setText(R.string.no_data_msg);
         }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            ListAdapter adapter = new SimpleAdapter(MainActivity.this, bookList,
+            adapter = new SimpleAdapter(MainActivity.this, bookList,
                     R.layout.list_item, new String[]{"title","authors"},
                     new int[]{R.id.book_title, R.id.book_authors});
             lv.setAdapter(adapter);
+
         }
     }
 }//End of MainActivity

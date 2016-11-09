@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Book Listing App</string>
-    <string name="hint">Search by title or author</string>
+    <string name="hint">Search books by title or author</string>
     <string name="search_btn">Search</string>
+    <string name="no_data_msg">Sorry, no data found. Please begin by typing a valid title or author in the search bar above.</string>
 </resources>
