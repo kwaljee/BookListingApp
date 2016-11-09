@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -52,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*TO DO:    1) Parse information from JSON and convert to String
-                2) Compare search from user in EditText with JSON String conversion updateUI accordingly
-                3) Ensure search is done in the background (would be better to use AsyncTaskLoader to avoid memory leaks)
-                4) Check for Empty List (Use ProgressBar in XML, hide after search has been conducted)
-                5) Add information for user on Empty Screen before search button is pressed and when app is first launched
-    */
-
     private class ParseJSON extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -94,14 +86,12 @@ public class MainActivity extends AppCompatActivity {
                             authors = "Unknown";
                         }
 
-
                         // tmp hash map for single book
                         HashMap<String, String> book = new HashMap<>();
 
                         // adding each child node to HashMap key => value
                         book.put(TAG_TITLE, title);
                         book.put(TAG_AUTHORS, authors);
-
 
                         // adding book to book list
                         bookList.add(book);
