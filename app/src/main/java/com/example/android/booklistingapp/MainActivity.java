@@ -6,23 +6,19 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_AUTHORS = "authors";
     private static String urlString;
     ArrayList<HashMap<String, String>> bookList;
+    ListAdapter adapter;
     private String TAG = MainActivity.class.getSimpleName();
     private ListView lv;
-    ListAdapter adapter;
     private EditText input;
     private TextView mEmptyStateTextView;
 

@@ -13,7 +13,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 
-//Makes a connection to server
 public class HttpHandler {
 
     private static final String TAG = HttpHandler.class.getSimpleName();
@@ -27,9 +26,21 @@ public class HttpHandler {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            // read the response
-            InputStream in = new BufferedInputStream(conn.getInputStream());
-            response = convertStreamToString(in);
+
+            conn.setReadTimeout(10000 /* milliseconds */);
+            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.connect();
+            //if the request was successful (response code 200);
+            //then read the input stream and parse the response
+            if (conn.getResponseCode() == 200) {
+                // read the response
+                InputStream in = new BufferedInputStream(conn.getInputStream());
+                response = convertStreamToString(in);
+
+            } else {
+                Log.e(TAG, "Error response code: " + conn.getResponseCode());
+            }
+
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         } catch (ProtocolException e) {
@@ -63,4 +74,6 @@ public class HttpHandler {
 
         return sb.toString();
     }
+
+
 }
