@@ -1,7 +1,6 @@
 package com.example.android.booklistingapp;
 
 import android.os.AsyncTask;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +18,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText input = (EditText) findViewById(R.id.search_txt);
                 String query = input.getText().toString().replace(" ", "+");
-                urlString = "https://www.googleapis.com/books/v1/volumes?q=" + query + "&orderBy=newest";
+                urlString = "https://www.googleapis.com/books/v1/volumes?q="+query+"&orderBy=newest";
                 new ParseJSON().execute(urlString);
             }
         });
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     // Getting JSON Array node
                     JSONArray items = jsonObj.getJSONArray("items");
 
-                    // looping through all Books
+                    // looping through all books
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject books = items.getJSONObject(i);
 
