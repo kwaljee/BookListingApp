@@ -1,5 +1,8 @@
 package com.example.android.booklistingapp;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,11 +40,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         input = (EditText) findViewById(R.id.search_txt);
         bookList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.book_list);
-
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         lv.setEmptyView(mEmptyStateTextView);
@@ -54,10 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                String query = input.getText().toString().replace(" ", "+");
-                urlString = "https://www.googleapis.com/books/v1/volumes?q="+query+"&orderBy=newest";
-                new ParseJSON().execute(urlString);
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    String query = input.getText().toString().replace(" ", "+");
+                    urlString = "https://www.googleapis.com/books/v1/volumes?q="+query+"&orderBy=newest";
+                    new ParseJSON().execute(urlString);
+                } else {
+                    mEmptyStateTextView.setText(R.string.no_internet);
+                }
             }
 
             @Override
